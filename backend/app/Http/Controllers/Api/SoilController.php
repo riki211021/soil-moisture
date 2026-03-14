@@ -12,27 +12,28 @@ class SoilController extends Controller
 public function store(Request $request)
 {
 
-    SoilMoisture::create([
-        'moisture_1' => $request->moisture1,
-        'moisture_2' => $request->moisture2,
-        'sensor_1' => $request->sensor1,
-        'sensor_2' => $request->sensor2,
-        'status_1' => $request->status1,
-        'status_2' => $request->status2
-    ]);
+SoilMoisture::create([
+    'moisture_1' => $request->input('moisture1'),
+    'moisture_2' => $request->input('moisture2'),
+    'sensor_1' => $request->input('sensor1'),
+    'sensor_2' => $request->input('sensor2'),
+    'status_1' => $request->input('status1'),
+    'status_2' => $request->input('status2')
+]);
 
-    DB::statement("
-        DELETE FROM soil_moistures
-        WHERE id NOT IN (
-            SELECT id FROM (
-                SELECT id FROM soil_moistures ORDER BY id DESC LIMIT 200
-            ) temp
-        )
-    ");
+DB::statement("
+DELETE FROM soil_moistures
+WHERE id NOT IN (
+SELECT id FROM (
+SELECT id FROM soil_moistures ORDER BY id DESC LIMIT 200
+) temp
+)
+");
 
-    return response()->json([
-        'status' => 'success'
-    ]);
+return response()->json([
+'status' => 'success'
+]); 
+
 }
 
 public function index()

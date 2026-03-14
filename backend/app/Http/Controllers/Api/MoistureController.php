@@ -8,8 +8,10 @@ use Illuminate\Support\Facades\Cache;
 
 class MoistureController extends Controller
 {
+
     public function controlPump(Request $request)
     {
+
         if ($request->has('pump1_mode')) {
             Cache::put('pump1_mode', $request->pump1_mode);
         }
@@ -34,13 +36,17 @@ class MoistureController extends Controller
         ]);
     }
 
+
     public function pumpStatus()
     {
+
         return response()->json([
             'pump1_mode' => Cache::get('pump1_mode','auto'),
             'pump1_status' => Cache::get('pump1_status',0),
             'pump2_mode' => Cache::get('pump2_mode','auto'),
             'pump2_status' => Cache::get('pump2_status',0),
         ]);
+
     }
+
 }
